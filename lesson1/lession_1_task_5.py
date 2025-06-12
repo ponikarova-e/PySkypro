@@ -1,14 +1,15 @@
-def Numbers(num):
-    print(num,end="")
+def numbers(num):
+    print(num, end="")
 
-Numbers(8)
-Numbers(8)
-Numbers(0)
-Numbers(0)
-Numbers(5)
-Numbers(5)
-Numbers(5)
-Numbers(3)
-Numbers(5)
-Numbers(3)
-Numbers(5)
+
+numbers(8)
+numbers(8)
+numbers(0)
+numbers(0)
+numbers(5)
+numbers(5)
+numbers(5)
+numbers(3)
+numbers(5)
+numbers(3)
+numbers(5)
