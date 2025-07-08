@@ -42,7 +42,7 @@ def test_capitalize_negative(input_str, expected):
 
 
 @pytest.mark.parametrize("input_str, expected", [
-    ("SkyPro", "SkyPro"),  # уже обрезанная строка
+    ("SkyPro", "SkyPro"),  #  строка уже обрезанная
     ("", ""),  # пустая строка
 ])
 def test_trim_negative(input_str, expected):
