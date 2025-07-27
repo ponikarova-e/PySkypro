@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pytest
 
+
 @pytest.fixture
 def driver():
     driver = webdriver.Chrome()
@@ -30,7 +31,7 @@ def test_color_forms(driver):
     driver.find_element(
         By.CSS_SELECTOR, '[type="submit"]').click()
 
-    # создаю переменные для проверки
+    # создаю переменные для  проверки
     first_name = driver.find_element(
         By.CSS_SELECTOR, '[id="first-name"]')
     last_name = driver.find_element(

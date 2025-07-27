@@ -1,55 +1,55 @@
-import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.edge.service import Service as EdgeService
-from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-class TestFormSubmission:
+def test_internet_shop():
+    driver = webdriver.Firefox()
+    driver.get("https://www.saucedemo.com/")
 
-    @pytest.fixture(scope='class')
-    def setup(self):
-        # Указываем какой браузер использовать
-        self.driver =webdriver.Edge(service=EdgeService(EdgeChromiumDriverManager().install()))
-        self.driver.get("https://bonigarcia.dev/selenium-webdriver-java/data-types.html")
-        yield
-        self.driver.quit()
+    # Авторизация
+    driver.find_element(By.ID, "user-name").send_keys("standard_user")
+    driver.find_element(By.ID, "password").send_keys("secret_sauce")
+    driver.find_element(By.ID, "login-button").click()
 
-    def test_form_submission(self, setup):
-        # Заполним форму
-        self.driver.find_element(By.NAME, "firstname").send_keys("Иван")
-        self.driver.find_element(By.NAME, "lastname").send_keys("Петров")
-        self.driver.find_element(By.NAME, "address").send_keys("Ленина, 55-3")
-        self.driver.find_element(By.NAME, "email").send_keys("test@skypro.com")
-        self.driver.find_element(By.NAME, "phone").send_keys("+7985899998787")
-        self.driver.find_element(By.NAME, "zipcode").send_keys("")  # Оставим пустым
-        self.driver.find_element(By.NAME, "city").send_keys("Москва")
-        self.driver.find_element(By.NAME, "country").send_keys("Россия")
-        self.driver.find_element(By.NAME, "job").send_keys("QA")
-        self.driver.find_element(By.NAME, "company").send_keys("SkyPro")
+    wait = WebDriverWait(driver, 10)
 
-        # Нажимаем кнопку Submit
-        self.driver.find_element(By.CSS_SELECTOR, "input[type='submit']").click()
+    # Добавляем товары в корзину
+    products = [
+        "Sauce Labs Backpack",
+        "Sauce Labs Bolt T-Shirt",
+        "Sauce Labs Onesie"
+    ]
 
-        # Ожидаем, пока все поля будут проверены
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".component"))
-        )
+    for product_name in products:
+        # Находим карточку товара по названию и добавляем в корзину
+        product_xpath = (f"//div[text()='{product_name}']"
+                         f"/ancestor::div[@class='inventory_item']//button")
+        add_button = wait.until(EC.element_to_be_clickable(
+            (By.XPATH, product_xpath)))
+        add_button.click()
 
-        # Проверим, что поле Zip code подсвечено красным
-        zip_code_field = self.driver.find_element(By.NAME, "zipcode")
-        zip_code_border_color = zip_code_field.value_of_css_property('border-color')
-        assert "rgb(255, 0, 0)" in zip_code_border_color, f"Expected Zip code to have red border, but got {zip_code_border_color}"
+    # Переходим в корзину
+    driver.find_element(By.CLASS_NAME, "shopping_cart_link").click()
 
-        # Проверим, что остальные поля подсвечены зеленым
-        fields = [
-            "firstname", "lastname", "address", "email",
-            "phone", "city", "country", "job", "company"
-        ]
+    # Нажимаем Checkout
+    wait.until(EC.element_to_be_clickable((By.ID, "checkout"))).click()
 
-        for field_name in fields:
-            field = self.driver.find_element(By.NAME, field_name)
-            border_color = field.value_of_css_property('border-color')
-            assert "rgb(0, 128, 0)" in border_color, f"Expected {field_name} to have green border, but got {border_color}"
+    # Заполняем форму
+    wait.until(EC.element_to_be_clickable(
+        (By.ID, "first-name"))).send_keys("ВашеИмя")
+    driver.find_element(By.ID, "last-name").send_keys("ВашаФамилия")
+    driver.find_element(By.ID, "postal-code").send_keys("12345")
+    driver.find_element(By.ID, "continue").click()
+
+    # Читаем итоговую сумму
+    total_element = wait.until(
+        EC.visibility_of_element_located(
+            (By.CLASS_NAME, "summary_total_label")))
+    total_text = total_element.text  # Например: "Total: $58.29"
+
+    print("Итоговая стоимость:", total_text)
+
+    driver.quit()
+    assert total_text == "Total: $58.29"

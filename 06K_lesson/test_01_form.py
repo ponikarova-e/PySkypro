@@ -58,7 +58,7 @@ def test_color_forms(driver):
     zip_code_style = driver.find_element(By.ID, "zip-code")
     assert zip_code_style.get_attribute("class") == "alert py-2 alert-danger"
 
-    # проверка остальных полей
+    #  проверка остальных полей
     forms = [
         first_name,
         last_name,
