@@ -51,5 +51,9 @@ def test_internet_shop():
 
     print("Итоговая стоимость:", total_text)
 
+    total = float(total_text.split("$")[-1])
+    # Извлечь число из "Total: $58.29"
+    assert total == 58.29
+
+    WebDriverWait(driver, 10)
     driver.quit()
-    assert total_text == "Total: $58.29"

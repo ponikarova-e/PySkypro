@@ -39,7 +39,7 @@ def test_color_forms(driver):
         By.CSS_SELECTOR, '[id="first-name"]')
     last_name = driver.find_element(
         By.CSS_SELECTOR, '[id="last-name"]')
-    adress = driver.find_element(
+    address = driver.find_element(
         By.CSS_SELECTOR, '[id="address"]')
     city = driver.find_element(
         By.CSS_SELECTOR, '[id="city"]')
@@ -62,7 +62,7 @@ def test_color_forms(driver):
     forms = [
         first_name,
         last_name,
-        adress,
+        address,
         city,
         country,
         email,
