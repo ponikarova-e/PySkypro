@@ -68,5 +68,4 @@ def test_select_1_row():
     rows = result.mappings().all()
 
     assert len(rows) == 0
-
     connection.close()
