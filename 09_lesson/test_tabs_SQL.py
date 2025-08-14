@@ -19,8 +19,10 @@ def test_select():
     connection = db.connect()
     try:
         # Вставляем тестовые данные
-        sql_insert = text("INSERT INTO subject(subject_id, subject_title) VALUES (:id, :title)")
-        connection.execute(sql_insert, {'id': test_subject_id, 'title': test_subject_title})
+        sql_insert = text("INSERT INTO subject(subject_id, subject_title)"
+                          " VALUES (:id, :title)")
+        connection.execute(sql_insert, {'id': test_subject_id,
+                                        'title': test_subject_title})
 
         # Выполняем выборку по ИД
         sql_select = text("SELECT * FROM subject WHERE subject_id = :id")
@@ -45,8 +47,10 @@ def test_insert():
     connection = db.connect()
     try:
         # Вставляем данные
-        sql_insert = text("INSERT INTO subject(subject_id, subject_title) VALUES (:id, :title)")
-        connection.execute(sql_insert, {'id': test_subject_id, 'title': test_subject_title})
+        sql_insert = text("INSERT INTO subject(subject_id, subject_title)"
+                          " VALUES (:id, :title)")
+        connection.execute(sql_insert, {'id': test_subject_id,
+                                        'title': test_subject_title})
 
         # Проверяем вставку
         sql_select = text("SELECT * FROM subject WHERE subject_id = :id")
@@ -71,12 +75,16 @@ def test_update():
     connection = db.connect()
     try:
         # Создаем начальную запись
-        sql_insert = text("INSERT INTO subject(subject_id, subject_title) VALUES (:id, :title)")
-        connection.execute(sql_insert, {'id': test_subject_id, 'title': initial_title})
+        sql_insert = text("INSERT INTO subject(subject_id, subject_title)"
+                          " VALUES (:id, :title)")
+        connection.execute(sql_insert, {'id': test_subject_id,
+                                        'title': initial_title})
 
         # Обновляем запись
-        sql_update = text("UPDATE subject SET subject_title = :title WHERE subject_id = :id")
-        connection.execute(sql_update, {'title': updated_title, 'id': test_subject_id})
+        sql_update = text("UPDATE subject SET subject_title = :title "
+                          "WHERE subject_id = :id")
+        connection.execute(sql_update, {'title': updated_title,
+                                        'id': test_subject_id})
 
         # Проверяем обновление
         sql_select = text("SELECT * FROM subject WHERE subject_id = :id")
@@ -99,8 +107,10 @@ def test_delete():
     connection = db.connect()
     try:
         # Создаем запись для удаления
-        sql_insert = text("INSERT INTO subject(subject_id, subject_title) VALUES (:id, :title)")
-        connection.execute(sql_insert, {'id': test_subject_id, 'title': title_to_delete})
+        sql_insert = text("INSERT INTO subject(subject_id, subject_title)"
+                          " VALUES (:id, :title)")
+        connection.execute(sql_insert, {'id': test_subject_id,
+                                        'title': title_to_delete})
 
         # Удаляем запись
         sql_delete = text("DELETE FROM subject WHERE subject_id= :id")
@@ -115,6 +125,4 @@ def test_delete():
         assert len(rows_after_delete) == 0
 
     finally:
-         connection.close()
-
-
+        connection.close()
